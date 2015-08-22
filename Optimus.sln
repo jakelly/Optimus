@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optimus", "Optimus\Optimus.csproj", "{7B77CD3A-AD66-40E2-8BB8-C9CB1F1D0B91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optimus-Test", "Optimus-Test\Optimus-Test.csproj", "{2A298CD4-4D21-45B1-87CD-0596E2D0E368}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7B77CD3A-AD66-40E2-8BB8-C9CB1F1D0B91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B77CD3A-AD66-40E2-8BB8-C9CB1F1D0B91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B77CD3A-AD66-40E2-8BB8-C9CB1F1D0B91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A298CD4-4D21-45B1-87CD-0596E2D0E368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A298CD4-4D21-45B1-87CD-0596E2D0E368}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A298CD4-4D21-45B1-87CD-0596E2D0E368}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A298CD4-4D21-45B1-87CD-0596E2D0E368}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
