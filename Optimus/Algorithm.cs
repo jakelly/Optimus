@@ -8,6 +8,12 @@ namespace Optimus
 {
     abstract class Algorithm
     {
-        public abstract void ProcessFile(string fileName = "");
+        
+        /// <summary>
+        /// Processes a file using this algorithm.
+        /// </summary>
+        /// <param name="fileName">Name of file to process.</param>
+        /// <returns>The number of lines processed.</returns>
+        public abstract int ProcessFile(string fileName = "");
     }
 }

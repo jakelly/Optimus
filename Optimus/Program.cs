@@ -9,45 +9,56 @@ namespace Optimus
 {
     class Program
     {
+        /// <summary>
+        /// The entry point of this program.  Where it all begins...
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             InitializeWorkingDirectory();
+            do
+            {
+                Run();
+            } while (Inquire("\nRun Again? [Y/N]:  ", Console.CursorTop + 5).ToUpper() == "Y");
+            
+        }
+
+
+        /// <summary>
+        /// Separated from [Main] to allow the program to loop indefinitely.
+        /// </summary>
+        static void Run()
+        {
             Intro();
             Inputs input = GetInputs();
-            // Build a File 
-            if (input == null)
+            if (input == null) throw new NullReferenceException("We need input my friend!");
+
+            string fileName = String.Empty;
+            // File is to be generated.
+            if (!((input.lowerLimit == 0)
+                && (input.upperLimit == 0)
+                && (input.integersPerFile == 0)))
             {
-                //Throw Error
-                
+                FileGenerator fg = new FileGenerator(input);
+                fileName = fg.FullPath;
             }
             else
             {
-                string fileName = String.Empty;
-                // File is to be generated.
-                if (!((input.lowerLimit == 0) 
-                    && (input.upperLimit == 0) 
-                    && (input.integersPerFile == 0)))
-                {
-                    FileGenerator fg = new FileGenerator(input);
-                    fileName = fg.FullPath;
-                }
-                else
-                {
-                    fileName = input.fileName;
-                }
-
-                Console.Write("Press [Enter] and we will see the results!");
-                Console.ReadLine();
-                Console.Clear(); 
-                Console.WriteLine(new string('▄', Console.WindowWidth));
-                Console.WriteLine("Results: ");
-                Console.WriteLine(new string('▀', Console.WindowWidth));
-                Algorithm algorithm = new Optimus();
-                algorithm.ProcessFile(fileName);
+                fileName = input.fileName;
             }
-            Inquire("\nThis program has terminated.  Press [Return] to exit.");
-        }
 
+            var lineCount = File.ReadLines(fileName).Count();
+
+            Console.BufferHeight = (lineCount > Console.BufferHeight) ? lineCount + 5 : Console.BufferHeight;
+            Console.Write("On to the results... [Press Enter]");
+            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine(new string('▄', Console.WindowWidth));
+            Console.WriteLine("Results: ");
+            Console.WriteLine(new string('▀', Console.WindowWidth));
+            Algorithm algorithm = new Optimus();
+            algorithm.ProcessFile(fileName);
+        }
 
         /// <summary>
         /// Every body loves an intro right?
@@ -222,6 +233,7 @@ namespace Optimus
                 try
                 {
                     numbers = Convert.ToUInt32(answer);
+                    
                     // Limit to 10000 just cause.
                     if (numbers <= 0)
                         throw new InvalidDataException("The number provided must be a positive integer.  Let's try again...");
@@ -237,13 +249,11 @@ namespace Optimus
                 }
                 catch(InvalidDataException ex)
                 {
-                    //Console.WriteLine(ex.Message);
                     answer = Inquire(String.Format("{0}\n{1}", ex.Message, question));
                     continue;
                 }
                 catch (Exception)
                 {
-                    //Console.WriteLine("I'm sure you can type more legibly than that?  (psst...  I'm Looking for a number)", numbers);
                     answer = Inquire(String.Format(
                         "(psst...  I'm Looking for a number)\n{0}", 
                         question));
@@ -253,60 +263,7 @@ namespace Optimus
             return numbers;
         }
 
-
-        /// <summary>
-        /// Solicits from the cosole junkie some information about how many digits should be in each number.
-        /// </summary>
-        /// <remarks>This would be a great function to abstract the logic since it's nearly identical to InquireNumbers.</remarks>
-        /// <returns></returns>
-        /*
-        static uint InquireBoundries()
-        {
-            //Dictionary<string, string> Messages = new Dictionary<string, string>();
-            //Messages.Add("Inquiry", "Lower Limit: \t")
-
-            string answer = "";
-            ulong lowerLimit = 0;
-
-            Console.WriteLine("Please provide boundries (lower and upper limits) for the numbers generated.");
-            Console.WriteLine("Format should be 'lower, upper': ")
-            do
-            {
-                Console.Write(Messages["Inquiry"]); //"Lower Limit: \t"); //Inquiry
-                answer = Console.ReadLine();
-                try
-                {
-                    lowerLimit = Convert.ToUInt64(answer);
-
-                    if (lowerLimit <= 0)
-                        throw new InvalidDataException("The number provided must be a positive integer.  Let's try again...");
-                    else
-                        Console.WriteLine("I was just thinking {0} would make a great lower limit!  I like the way you think. :-D", lowerLimit);
-
-                    break;
-                }
-                catch (OverflowException ex)
-                {
-                    Console.WriteLine("Let's keep it real here, that number far exceeds my limits!  Let's try again.");
-                    continue;
-                }
-                catch (InvalidDataException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    continue;
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("That number doesn't exist in my vocabulary.  How does that translate into english?");
-                    Console.WriteLine("(psst.  I'm Looking for a positive integer.)");
-                    continue;
-                }
-            } while (true);
-            return lowerLimit;
-        }
-        */
-
-
+        
         /// <summary>
         /// Generates a Transformer's quote in light of "Optimus Prime" and this wonder exercise!
         /// </summary>
@@ -332,7 +289,7 @@ namespace Optimus
 
 
         /// <summary>
-        /// Generates a file name base on Transformer characters.
+        /// Generates a file name based on Transformer characters.
         /// </summary>
         /// <returns>A File Name</returns>
         static string GetRandomFileName()
@@ -372,28 +329,30 @@ namespace Optimus
             return String.Concat(names_1[i], names_2[j]);
         }
 
+
         /// <summary>
         /// Helper function to ask for user input.
         /// </summary>
-        /// <param name="inquiry"></param>
-        /// <returns></returns>
-        static string Inquire(string inquiry)
+        /// <param name="inquiry">A question to be displayed to the user.</param>
+        /// <returns>An answer to the inquiry.</returns>
+        static string Inquire(string inquiry, int cursorTop = 37)
         {
-            const int CURSOR_TOP = 37;
-            Console.SetCursorPosition(0, CURSOR_TOP);
+            Console.SetCursorPosition(0, cursorTop);
             Console.Write(inquiry);
             string result = Console.ReadLine();
             int count = inquiry.Count(f => f == '\n');
-            ClearCurrentConsoleLine(CURSOR_TOP, count);
+            ClearCurrentConsoleLine(cursorTop, count);
             return result;
         }
+
 
         /// <summary>
         /// Helper function to clear current console line.
         /// </summary>
+        /// <param name="cursorTop">Cursor Position to begin with clearing.</param>
+        /// <param name="lines">The number of lines to clear.</param>
         static void ClearCurrentConsoleLine(int cursorTop, int lines)
         {
-            //int currentLineCursor = cursorTop;
             Console.SetCursorPosition(0, cursorTop);
             for (int i = 0; i <= lines; i++)
             {
@@ -403,6 +362,10 @@ namespace Optimus
             Console.SetCursorPosition(0, cursorTop);
         }
 
+
+        /// <summary>
+        /// Establishes the working directory for the program.
+        /// </summary>
         static void InitializeWorkingDirectory()
         {
             // Set the working directory for relative files passed to this program.

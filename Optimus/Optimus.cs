@@ -12,8 +12,10 @@ namespace Optimus
         private static int origRow;
         private static int origCol;
 
-        public override void ProcessFile(string fileName)
+        public override int ProcessFile(string fileName)
         {
+            int linesProcessed = 0;
+
             if (! (File.Exists(fileName)) )
             {
                 if (fileName.Contains(@"\")) throw new FileNotFoundException(
@@ -30,12 +32,18 @@ namespace Optimus
                     ulong value;
                     try { value = Convert.ToUInt64(line); }
 	                catch (OverflowException) { continue; /* Ignore this line in the file */}
-                    //Console.WriteLine("-----------------------");
                     GeneratePrimeFactors(value);
+                    linesProcessed += 1;
                 }
             }
+            return linesProcessed;
         }
 
+
+        /// <summary>
+        /// Generates the prime factors of a given number.
+        /// </summary>
+        /// <param name="value"></param>
         public static void GeneratePrimeFactors(ulong value)
         {
             ulong number = value;
@@ -52,21 +60,22 @@ namespace Optimus
                 if (((i % 5) == 0) && (i > 5)) i += 2;   // Eliminate multiples of 5
             }
             Console.WriteLine(number);
+            System.Threading.Thread.Sleep(50);
         }
 
-        private static void WriteAt(string s, int x, int y)
-        {
-            try
-            {
-                Console.SetCursorPosition(origCol + x, origRow + y);
-                Console.Write(s);
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                Console.Clear();
-                Console.WriteLine(e.Message);
-            }
-        }
+        //private static void WriteAt(string s, int x, int y)
+        //{
+        //    try
+        //    {
+        //        Console.SetCursorPosition(origCol + x, origRow + y);
+        //        Console.Write(s);
+        //    }
+        //    catch (ArgumentOutOfRangeException e)
+        //    {
+        //        Console.Clear();
+        //        Console.WriteLine(e.Message);
+        //    }
+        //}
 
     }
 }

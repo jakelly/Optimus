@@ -41,33 +41,6 @@ namespace Optimus
         /// </summary>
         public string FileName { get; set; }
         public string FullPath { get; set; }
-
-
-        /// <summary>
-        /// Generates a file of integers.
-        /// </summary>
-        /// <returns>Nadda.  But it does output the file to the "Generated-Data" folder of the Project</returns>
-        private void GenerateFile()
-        {
-            Random rnd = new Random();
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < _integersPerFile; i++)
-            {
-                ulong value = rnd.Next(_lowerLimit, _upperLimit);
-                sb.AppendLine(value.ToString());
-                /*
-                Byte[] byteArray = BitConverter.GetBytes(_upperLimit);
-                rnd.NextBytes(byteArray);
-                sb.AppendLine(BitConverter.ToUInt64(byteArray, startIndex: 0).ToString().Substring(0,5));
-                 */
-            }
-
-            using (StreamWriter sw = new StreamWriter(CreateFileName(), append: false))
-            {
-                sw.Write(sb.ToString());
-            }
-        }
         
 
         /// <summary>
@@ -86,6 +59,28 @@ namespace Optimus
 
             FullPath = String.Format(@"{0}{1}", dataDirectory, fileName.GenerateSlug());
             return FullPath;
+        }
+
+
+        /// <summary>
+        /// Generates a file of integers.
+        /// </summary>
+        /// <returns>Nadda.  But it does output the file to the "Generated-Data" folder of the Project</returns>
+        private void GenerateFile()
+        {
+            Random rnd = new Random();
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < _integersPerFile; i++)
+            {
+                ulong value = rnd.Next(_lowerLimit, _upperLimit);
+                sb.AppendLine(value.ToString());
+            }
+
+            using (StreamWriter sw = new StreamWriter(CreateFileName(), append: false))
+            {
+                sw.Write(sb.ToString());
+            }
         }
 
     }
