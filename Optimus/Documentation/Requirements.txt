@@ -11,14 +11,3 @@ Bonus: include unit tests for the code ( nunit is preferred)
 Once complete, email the *.cp file(s) along with an input file we should use as input to your program.
 
 -------------------------------------------------------------------------------
-Plan of attack:
-	- Generate file of integers
-		- Variables:
-			- How many numbers do we generate
-			- What is the upper limit
-			- Overwrite previously generated file?
-	- Create  
-	- Determine effective algorithm for prime factors
-		- f % n = m	(where factor modulus number = 0)
-		- [(f + 1) | next highest prime] and repeat until modulus = 0
-		- record each number where modulus = 0 (they are prime numbers and will be use to speed up the process)

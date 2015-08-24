@@ -10,7 +10,6 @@ namespace Optimus
     /// <summary>
     /// Helpful Extensions
     /// </summary>
-    /// <remarks>This is an example of using a Keyword as a class name as well.  Though not recommended, it is possible.</remarks>
     static class Extensions
     {
         /// <summary>
@@ -42,6 +41,22 @@ namespace Optimus
         {
             byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(txt);
             return System.Text.Encoding.ASCII.GetString(bytes);
+        }
+
+
+        /// <summary>
+        /// Generates a 64 bit unsigned numbers between min and max.
+        /// </summary>
+        /// <param name="min">minimum value</param>
+        /// <param name="max">maximum value</param>
+        /// <param name="rand">random object</param>
+        /// <returns></returns>
+        public static ulong Next(this Random rand, ulong min, ulong max)
+        {
+            byte[] buf = new byte[8];
+            rand.NextBytes(buf);
+            ulong longRand = BitConverter.ToUInt64(buf, 0);
+            return (longRand % (max - min) + min);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-//using System.Runtime.Extensions;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,33 +14,34 @@ namespace Optimus
     /// </summary>
     class FileGenerator
     {
-        private string _FileName;
-        private int _IntegersPerFile;
-        private UInt64 _UpperLimit;
+        private uint _integersPerFile;
+        private UInt64 _upperLimit;
+        private UInt64 _lowerLimit;
+
 
         /// <summary>
         /// Constructor used to generate a file.
+        /// This number should be between lowerLimit(1) and upperLimit (184,467,440,737,095,551,615).</param>
         /// </summary>
-        /// <param name="FileName">A unique name (without path or extension).</param>
-        /// <param name="IntegersPerFile">The number of integer to write to the file.</param>
-        /// <param name="UpperLimit">The maximum number that should be randomly generated.
-        /// This number should be between 1 and 184,467,440,737,095,551,615.</param>
-        public FileGenerator(string FileName = "random file of integers", int IntegersPerFile = 10, UInt64 UpperLimit = UInt64.MaxValue)
+        /// <param name="input"></param>
+        public FileGenerator(Inputs input)
         {
-            this.FileName = FileName;
-            _UpperLimit = UpperLimit;
-            _IntegersPerFile = IntegersPerFile;
+            if (input == null) throw new ArgumentNullException("Input needed for FileGenerator to work");
+            this.FileName = input.fileName;
+            _upperLimit = (input.upperLimit <= 1) ? 999999 : input.upperLimit;
+            _lowerLimit = (input.lowerLimit <= 1) ? 999 : input.lowerLimit;
+            _integersPerFile = input.integersPerFile;
+
             this.GenerateFile();
         }
+
 
         /// <summary>
         /// Unique name of the File to be generated.
         /// </summary>
-        public string FileName
-        {
-            get { return _FileName; }
-            set { _FileName = value; }
-        }
+        public string FileName { get; set; }
+        public string FullPath { get; set; }
+
 
         /// <summary>
         /// Generates a file of integers.
@@ -50,29 +50,42 @@ namespace Optimus
         private void GenerateFile()
         {
             Random rnd = new Random();
-            
-            //TODO: Test for Directory Not Found.
-
-            string file = String.Format(@"{0}\Generated-Data\{1}",
-                Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName,
-                _FileName.GenerateSlug());
-
-            Console.WriteLine(file);
-
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < _IntegersPerFile; i++)
+            for (int i = 0; i < _integersPerFile; i++)
             {
-                //FIX:  UpperLimit at this point is irrelevant as randomization doesn't use it.
-                Byte[] byteArray = BitConverter.GetBytes(_UpperLimit);
+                ulong value = rnd.Next(_lowerLimit, _upperLimit);
+                sb.AppendLine(value.ToString());
+                /*
+                Byte[] byteArray = BitConverter.GetBytes(_upperLimit);
                 rnd.NextBytes(byteArray);
-                sb.AppendLine(BitConverter.ToUInt64(byteArray, startIndex: 0).ToString());
+                sb.AppendLine(BitConverter.ToUInt64(byteArray, startIndex: 0).ToString().Substring(0,5));
+                 */
             }
 
-            using (StreamWriter sw = new StreamWriter(file, append: false))
+            using (StreamWriter sw = new StreamWriter(CreateFileName(), append: false))
             {
                 sw.Write(sb.ToString());
             }
+        }
+        
+
+        /// <summary>
+        /// Creates a FileName for the Generated File.  Ensures the folder exists for the file as well.
+        /// </summary>
+        /// <returns>File Name that was created based on the FileName passed in.</returns>
+        public string CreateFileName(string fileName = "")
+        {
+            // Give option to pass a different file name.
+            if (String.IsNullOrWhiteSpace(fileName)) fileName = this.FileName;
+ 
+            string workingDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string dataDirectory = String.Format(@"{0}\Generated-Data\", workingDirectory);
+
+            if (!(Directory.Exists(dataDirectory))) Directory.CreateDirectory(dataDirectory);
+
+            FullPath = String.Format(@"{0}{1}", dataDirectory, fileName.GenerateSlug());
+            return FullPath;
         }
 
     }

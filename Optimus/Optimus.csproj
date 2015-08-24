@@ -44,9 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileGenerator.cs" />
-    <Compile Include="Prime.cs" />
+    <Compile Include="Inputs.cs" />
+    <Compile Include="Optimus.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
