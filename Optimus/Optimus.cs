@@ -9,9 +9,11 @@ namespace Optimus
 {
     class Optimus : Algorithm
     {
-        private static int origRow;
-        private static int origCol;
-
+        /// <summary>
+        /// Runs the algorithm against each integer in the referenced file.
+        /// </summary>
+        /// <param name="fileName">Name of file to be processed</param>
+        /// <returns>Number of lines processed.</returns>
         public override int ProcessFile(string fileName)
         {
             int linesProcessed = 0;

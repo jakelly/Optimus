@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Optimus
 {
-    class Program
+    public class Program
     {
         /// <summary>
         /// The entry point of this program.  Where it all begins...
         /// </summary>
         /// <param name="args"></param>
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             InitializeWorkingDirectory();
             do
