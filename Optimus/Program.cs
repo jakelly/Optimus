@@ -56,6 +56,7 @@ namespace Optimus
             Console.WriteLine(new string('▄', Console.WindowWidth));
             Console.WriteLine("Results: ");
             Console.WriteLine(new string('▀', Console.WindowWidth));
+
             Algorithm algorithm = new Optimus();
             algorithm.ProcessFile(fileName);
         }
@@ -120,7 +121,6 @@ namespace Optimus
             uint numbers = 0;
             ulong digits = 5;
 
-            //Console.Write("{0}, {1}", Console.CursorTop, Console.CursorLeft);
             answer = Inquire("\nShould we generate a file? [Y/N]:  ");
             do
             {
@@ -128,7 +128,7 @@ namespace Optimus
                 {
                     fileName = InquireNewFileName();
                     numbers = InquireNumbers();
-                    //digits = InquireBoundries();
+                    //digits = InquireBoundries();  //Simplify: Time is short...
                     return new Inputs()
                     {
                         upperLimit = 999999999,

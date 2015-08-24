@@ -50,7 +50,7 @@ namespace Optimus
         /// <param name="min">minimum value</param>
         /// <param name="max">maximum value</param>
         /// <param name="rand">random object</param>
-        /// <returns></returns>
+        /// <returns>A unsigned long random number.</returns>
         public static ulong Next(this Random rand, ulong min, ulong max)
         {
             byte[] buf = new byte[8];
