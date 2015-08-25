@@ -19,7 +19,7 @@ namespace Optimus
             do
             {
                 Run();
-            } while (Inquire("\nRun Again? [Y/N]:  ", Console.CursorTop + 5).ToUpper() == "Y");
+            } while (Inquire("\nRun Again? [Y/N]:  ", Console.CursorTop).ToUpper() == "Y");
             
         }
 

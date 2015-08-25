@@ -51,13 +51,15 @@ namespace Optimus
         {
             // Give option to pass a different file name.
             if (String.IsNullOrWhiteSpace(fileName)) fileName = this.FileName;
- 
+
+            /*
             string workingDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
             string dataDirectory = String.Format(@"{0}\Generated-Data\", workingDirectory);
-
+            
             if (!(Directory.Exists(dataDirectory))) Directory.CreateDirectory(dataDirectory);
-
-            FullPath = String.Format(@"{0}{1}", dataDirectory, fileName.GenerateSlug());
+            */
+            
+            FullPath = String.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), fileName.GenerateSlug());
             return FullPath;
         }
 

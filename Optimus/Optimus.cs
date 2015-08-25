@@ -33,7 +33,7 @@ namespace Optimus
                 {
                     ulong value;
                     try { value = Convert.ToUInt64(line); }
-	                catch (OverflowException) { continue; /* Ignore this line in the file */}
+	                catch (Exception) { continue; /* Ignore this line in the file */}
                     GeneratePrimeFactors(value);
                     linesProcessed += 1;
                 }
